@@ -1,0 +1,16 @@
+# ScaledObject: le dice a KEDA qué Deployment vigilar y bajo qué condiciones escalar.
+# Fuente verificada: https://keda.sh/docs/2.20/scalers/cpu/
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: keda-demo-scaler
+spec:
+  scaleTargetRef:
+    name: keda-demo
+  minReplicaCount: 1
+  maxReplicaCount: 6
+  triggers:
+    - type: cpu
+      metricType: Utilization
+      metadata:
+        value: "50"   # escala cuando el uso de CPU supera el 50% de lo pedido en requests

@@ -1,0 +1,33 @@
+# Deployment de prueba para KEDA. Trae 'resources' declarados porque el scaler
+# de CPU de KEDA necesita una base sobre la cual calcular el % de utilización.
+# También trae 'tolerations' para el experimento combinado (Fase 7), donde
+# los pods extra deben poder correr en nodos falsos creados por kwok.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keda-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keda-demo
+  template:
+    metadata:
+      labels:
+        app: keda-demo
+    spec:
+      tolerations:
+        - key: "kwok-provider"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+      containers:
+        - name: keda-demo
+          image: nginx:1.27-alpine
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1000Mi"
+            limits:
+              cpu: "200m"
+              memory: "1000Mi"

@@ -1,0 +1,31 @@
+# Deployment de prueba para forzar Scale-UP de Nodos vía Cluster Autoscaler + kwok.
+# Pide más memoria de la que un nodo real de práctica (kind) suele tener disponible,
+# forzando pods a Pending y disparando al Cluster Autoscaler.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scale-test
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: scale-test
+  template:
+    metadata:
+      labels:
+        app: scale-test
+    spec:
+      # Necesaria porque kwok pone este taint por defecto en sus nodos simulados.
+      # Sin esto, el Cluster Autoscaler no puede usar nodos kwok para acomodar los pods.
+      tolerations:
+        - key: "kwok-provider"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+      containers:
+        - name: pause
+          image: registry.k8s.io/pause:3.9
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu: "500m"
