@@ -15,26 +15,26 @@ Demonstrate the full Kubernetes autoscaling loop — from Pod-level scaling (KED
 ## 🧩 Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                     kind cluster (Docker, local)              │
-│                                                                 │
+┌──────────────────────────────────────────────────────────────┐
+│                    kind cluster (Docker, local)              │
+│                                                              │
 │   ┌──────────┐      ┌──────────────────┐      ┌────────────┐ │
-│   │  KEDA    │─────▶│  Pods (replicas)  │─────▶│  Pending?  │ │
-│   │ (events) │      │   of the app       │      │            │ │
+│   │  KEDA    │─────▶│  Pods (replicas) │─────▶│  Pending?  │ │
+│   │ (events) │      │   of the app     │      │            │ │
 │   └──────────┘      └──────────────────┘      └─────┬──────┘ │
-│                                                        │        │
-│                                                        ▼        │
-│                                          ┌──────────────────┐  │
-│                                          │ Cluster Autoscaler│  │
-│                                          │  (or Karpenter)   │  │
-│                                          └─────────┬────────┘  │
-│                                                      │           │
-│                                                      ▼           │
-│                                          ┌──────────────────┐  │
-│                                          │  kwok controller  │  │
-│                                          │ (simulated nodes) │  │
-│                                          └──────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
+│                                                     │        │
+│                                                     ▼        │
+│                                        ┌──────────────────┐  │
+│                                        │Cluster Autoscaler│  │
+│                                        │ (or Karpenter)   │  │
+│                                        └─────────┬────────┘  │
+│                                                  │           │
+│                                                  ▼           │
+│                                        ┌──────────────────┐  │
+│                                        │ kwok controller  │  │
+│                                        │(simulated nodes) │  │
+│                                        └──────────────────┘  │
+└──────────────────────────────────────────────────────────────┘
 ```
 
 **Key concepts:**
